@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bn3w6sa66wfyo"]
+
+[ext_resource type="Script" uid="uid://d2cn3jgvmycxn" path="res://scripts/main.gd" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://bubakdxn1gdst" path="res://scenes/player.tscn" id="1_o5qli"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
+size = Vector2(8, 720)
+
+[node name="main" type="Node2D" unique_id=1046916506]
+script = ExtResource("1_0wfyh")
+
+[node name="background" type="CanvasLayer" parent="." unique_id=387152111]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="background" unique_id=206973363]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.60784316, 0.7294118, 0.6117647, 1)
+
+[node name="player1" parent="." unique_id=1252405544 instance=ExtResource("1_o5qli")]
+position = Vector2(320, 360)
+scale = Vector2(2, 2)
+
+[node name="player2" parent="." unique_id=1569891958 instance=ExtResource("1_o5qli")]
+position = Vector2(960, 360)
+scale = Vector2(2, 2)
+
+[node name="divider" type="StaticBody2D" parent="." unique_id=2130939002]
+position = Vector2(640, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="line" type="Line2D" parent="divider" unique_id=1287152201]
+points = PackedVector2Array(0, 0, 0, 720)
+width = 5.0
+default_color = Color(0.28773504, 0.38017872, 0.2916353, 1)
+
+[node name="collision" type="CollisionShape2D" parent="divider" unique_id=490919741]
+position = Vector2(0, 360)
+shape = SubResource("RectangleShape2D_0wfyh")
