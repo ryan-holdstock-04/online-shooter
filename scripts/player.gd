@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var bullet_scene: PackedScene
 
 func _input(event):
+	# same as below, makes it so only player1 shoots
 	if !is_player_1:
 		return
 	if event.is_action_pressed("click"):
