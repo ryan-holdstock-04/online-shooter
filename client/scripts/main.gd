@@ -37,7 +37,7 @@ func _process(delta):
 		is_dead.queue_free()
 		print("dead")
 
-	
+	print(get_global_mouse_position())
 	
 	
 	socket.poll()
