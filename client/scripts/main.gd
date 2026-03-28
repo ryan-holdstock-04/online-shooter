@@ -2,6 +2,9 @@ extends Node2D
 
 var socket = WebSocketPeer.new()
 var last_state = WebSocketPeer.STATE_CLOSED
+var state = socket.get_ready_state()
+@onready var is_dead = null
+@onready var has_bullet = false
 
 var url = "ws://localhost:8080"
 var data = {
@@ -27,9 +30,21 @@ func _ready():
 
 
 func _process(delta):
+	# print(is_dead)
+	if is_dead != null:
+		is_dead.queue_free()
+
+	#if has_bullet != null:
+		#print(has_bullet)
+	#
+	#if is_dead != null:
+		#print(is_dead)
+	#if $player2.is_dead:
+		#print("player 1 dead")
 	
+	has_bullet = null
 	socket.poll()
-	var state = socket.get_ready_state()
+	
 	
 	var packet = socket.get_packet()
 	var message = packet.get_string_from_utf8()
@@ -38,14 +53,14 @@ func _process(delta):
 		message = JSON.parse_string(message)
 	
 	if (!isConnected && message == "connected"):
-		print("Connection Successful")
+		#print("Connection Successful")
 		isConnected = true
 		var msg = JSON.stringify({"action": "get_id"})
 		socket.send_text(msg)
 	
 	if (message is Dictionary):
 		if(message.has("newId")):
-			print("You are player: " + message.newId)
+			#print("You are player: " + message.newId)
 			data["id"] = message.newId
 		elif (message.has("action")):
 			if (message.action == "newPosition"):
@@ -56,7 +71,7 @@ func _process(delta):
 					# mirror player 2 x position
 					$player2.position.x = 1280 - int(message.position[0])
 					$player2.position.y = int(message.position[1]);
-					print("Player 2 new position", message.position[0], "," ,message.position[1]);
+					#print("Player 2 new position", message.position[0], "," ,message.position[1]);
 	
 	#print("X:", $player1.position.x)
 	#print("y:", $player1.position.y)

@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var speed = 250
 @onready var is_player_1
+#@onready var is_dead = false
 
 @onready var target
 @export var bullet_scene: PackedScene
@@ -15,6 +16,7 @@ func _input(event):
 		var bullet = bullet_scene.instantiate()
 		owner.add_child(bullet)
 		bullet.transform = $bullet_origin.global_transform
+		owner.has_bullet = get_global_mouse_position()
 
 func _physics_process(delta):
 	# this makes it so only player1 moves, i think do whatever shenanigans determine which player is which here
