@@ -48,16 +48,15 @@ wss.on('connection', (ws) => {
             console.log("Player id: ", data.id, " | ", gameState[data.id].position)
             sendPosition(data);
         } else if (data.action === "bullet") {
-            console.log("player " + data.id + " sent a bullet to " + data.cords);
+            console.log("player " + data.id + " sent a bullet");
             
-            const send = {"action" : "bullet", "id":data.id, "cords" : data.cords};
+            const send = {"action" : "bullet", "id":data.id, "cords":data.cords};
 
             wss.clients.forEach((client) => {
                 if (client.readyState ===1) {
                     client.send(JSON.stringify(send));
                 }
             })
-            
         }
     });
 

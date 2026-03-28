@@ -16,6 +16,7 @@ var data = {
 
 var player1x = []
 var player1y = []
+var player1mouse = []
 
 var isConnected = false
 
@@ -36,8 +37,6 @@ func _process(delta):
 	if is_dead != null:
 		is_dead.queue_free()
 		print("dead")
-
-	print(get_global_mouse_position())
 	
 	
 	socket.poll()
@@ -57,7 +56,7 @@ func _process(delta):
 	
 	# send bullet to server
 	if has_bullet != null:
-		var msg = JSON.stringify({"action":"bullet", "cords":has_bullet, "id":data.id})
+		var msg = JSON.stringify({"action":"bullet", "cords":get_global_mouse_position(), "id":data.id})
 		socket.send_text(msg)
 		has_bullet = null
 		
@@ -77,25 +76,22 @@ func _process(delta):
 					$player2.position.y = int(message.position[1]);
 			if(message.action == "bullet"):
 				if (int(data.id) != int(message.id)):
-					print(message.cords)
-					$player2.target = message.cords
 					var bullet = bullet_scene.instantiate()
 					add_child(bullet)
+					var position = message.cords
+					var clean_string = position.replace("(", "").replace(")", "")
+					var string_parts = clean_string.split(",")
+					var target_cords = Vector2(float(string_parts[0]), float(string_parts[1]))
+					$player2.look_at(target_cords)
 					bullet.transform = $player2.bullet_origin.global_transform
 					
-					
-					#send a bullet from player 2
-				
-				
-					
-					
-					#print("Player 2 new position", message.position[0], "," ,message.position[1]);
 	
 	#print("X:", $player1.position.x)
 	#print("y:", $player1.position.y)
 	
 	player1x.append($player1.position.x)
 	player1y.append($player1.position.y)
+
 	
 	if (len(player1x) == 3 && len(player1y) == 3):
 		player1x.remove_at(0)
