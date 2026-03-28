@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" uid="uid://d2cn3jgvmycxn" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bubakdxn1gdst" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://b6v0j85hlyqb8" path="res://scenes/bullet.tscn" id="2_sugp2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
 size = Vector2(8, 720)
 
 [node name="main" type="Node2D" unique_id=1046916506]
 script = ExtResource("1_0wfyh")
+bullet_scene = ExtResource("2_sugp2")
 
 [node name="background" type="CanvasLayer" parent="." unique_id=387152111]
 layer = -1

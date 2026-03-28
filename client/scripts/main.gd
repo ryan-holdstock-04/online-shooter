@@ -6,6 +6,8 @@ var state = socket.get_ready_state()
 @onready var is_dead = null
 @onready var has_bullet = false
 
+@export var bullet_scene: PackedScene
+
 var url = "ws://localhost:8080"
 var data = {
 	"position" : [320,360],
@@ -33,16 +35,11 @@ func _process(delta):
 	# print(is_dead)
 	if is_dead != null:
 		is_dead.queue_free()
+		print("dead")
 
-	#if has_bullet != null:
-		#print(has_bullet)
-	#
-	#if is_dead != null:
-		#print(is_dead)
-	#if $player2.is_dead:
-		#print("player 1 dead")
 	
-	has_bullet = null
+	
+	
 	socket.poll()
 	
 	
@@ -58,6 +55,13 @@ func _process(delta):
 		var msg = JSON.stringify({"action": "get_id"})
 		socket.send_text(msg)
 	
+	# send bullet to server
+	if has_bullet != null:
+		var msg = JSON.stringify({"action":"bullet", "cords":has_bullet, "id":data.id})
+		socket.send_text(msg)
+		has_bullet = null
+		
+	
 	if (message is Dictionary):
 		if(message.has("newId")):
 			#print("You are player: " + message.newId)
@@ -71,6 +75,20 @@ func _process(delta):
 					# mirror player 2 x position
 					$player2.position.x = 1280 - int(message.position[0])
 					$player2.position.y = int(message.position[1]);
+			if(message.action == "bullet"):
+				if (int(data.id) != int(message.id)):
+					print(message.cords)
+					$player2.target = message.cords
+					var bullet = bullet_scene.instantiate()
+					add_child(bullet)
+					bullet.transform = $player2.bullet_origin.global_transform
+					
+					
+					#send a bullet from player 2
+				
+				
+					
+					
 					#print("Player 2 new position", message.position[0], "," ,message.position[1]);
 	
 	#print("X:", $player1.position.x)

@@ -7,6 +7,8 @@ extends CharacterBody2D
 @onready var target
 @export var bullet_scene: PackedScene
 
+@onready var bullet_origin = $bullet_origin
+
 func _input(event):
 	# same as below, makes it so only player1 shoots
 	if !is_player_1:
