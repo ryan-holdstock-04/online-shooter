@@ -27,7 +27,7 @@ wss.on('connection', (ws) => {
         //console.log(data);
 
         if (data.action === "get_id") {
-            console.log(currentId);
+            console.log("Player " + currentId + " connected");
             ws.send(JSON.stringify({newId : currentId.toString()}))
 
             const push = {
@@ -40,23 +40,12 @@ wss.on('connection', (ws) => {
             currentId++;
         } else if (data.action === "update_x_position") {
             gameState[data.id].position[0] = data.x;
-            console.log("Player id: ", data.id, " | ", gameState[data.id].position)
             sendPosition(data);
-            
         } else if (data.action === "update_y_position") {
             gameState[data.id].position[1] = data.y;
-            console.log("Player id: ", data.id, " | ", gameState[data.id].position)
             sendPosition(data);
-        } else if (data.action === "bullet") {
-            console.log("player " + data.id + " sent a bullet");
-            
-            const send = {"action" : "bullet", "id":data.id, "cords":data.cords};
-
-            wss.clients.forEach((client) => {
-                if (client.readyState ===1) {
-                    client.send(JSON.stringify(send));
-                }
-            })
+        } else if (data.action === "bullet") {            
+            sendBullet(data);
         }
     });
 
@@ -68,6 +57,15 @@ wss.on('connection', (ws) => {
     })
 
 });
+
+const sendBullet = (data) => {
+    const send = {"action" : "bullet", "id":data.id, "cords":data.cords};
+            wss.clients.forEach((client) => {
+                if (client.readyState ===1) {
+                    client.send(JSON.stringify(send));
+                }
+            });
+}
 
 const sendPosition = (data) => {
 
@@ -81,7 +79,7 @@ const sendPosition = (data) => {
                 if (client.readyState ===1) {
                     client.send(JSON.stringify(send));
                 }
-            })
+            });
 }
 
 
