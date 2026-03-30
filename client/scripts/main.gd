@@ -12,7 +12,7 @@ var last_state = WebSocketPeer.STATE_CLOSED
 @onready var player2_health = $global_ui/health_bars/health_bars_hbox/player_2_health
 @onready var player1_hp_colors = player1_health.get_theme_stylebox("fill") as StyleBoxFlat
 @onready var player2_hp_colors = player2_health.get_theme_stylebox("fill") as StyleBoxFlat
-var url = "ws://localhost:8080"
+var url = "ws://76.196.202.79:80"
 var data = {
 	"position" : [320,360],
 	"id" : 0
@@ -22,6 +22,8 @@ var player1x = []
 var player1y = []
 var player1mouse = []
 var playerHealth = []
+
+var playerDead = false
 
 var isConnected = false
 
@@ -39,6 +41,16 @@ func _ready():
 
 
 func _process(delta):
+	
+	if is_dead != null:
+		playerDead = true;
+		is_dead.queue_free()
+		print("dead")
+	
+	if playerDead:
+		print("player dead")
+		return
+
 	
 	socket.poll()
 	var state = socket.get_ready_state()
@@ -65,6 +77,7 @@ func _process(delta):
 					if (message.action == "newPosition"):
 						if (int(data.id) != int(message.id)):
 							# mirror player 2 x position
+							
 							$player2.position.x = 1280 - int(message.position[0])
 							$player2.position.y = int(message.position[1]);
 					if(message.action == "bullet"):
@@ -87,14 +100,13 @@ func _process(delta):
 							$player1.health = health
 							player1_health.value = health
 	
+	
+	
 	player1x.append($player1.position.x)
 	player1y.append($player1.position.y)
 	playerHealth.append($player2.health)
 	
 	
-	if is_dead != null:
-		is_dead.queue_free()
-		print("dead")
 	
 	if (len(playerHealth) == 3):
 		playerHealth.remove_at(0)

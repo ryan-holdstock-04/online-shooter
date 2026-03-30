@@ -8,9 +8,11 @@ func _physics_process(delta):
 		queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
-	body.health -= 20
+	
 	
 	if body.health <= 0:
 		body.owner.is_dead = body
 	#print(body.owner.is_dead)
+	body.health -= 20
+	
 	queue_free()
