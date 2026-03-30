@@ -21,6 +21,7 @@ var data = {
 var player1x = []
 var player1y = []
 var player1mouse = []
+var playerHealth = []
 
 var isConnected = false
 
@@ -80,12 +81,28 @@ func _process(delta):
 							var mirrored_cords = Vector2(mirrored_x, target_cords.y)
 							$player2.look_at(mirrored_cords)
 							bullet.transform = $player2.bullet_origin.global_transform
+					if (message.action == "update_health"):
+						if (int(data.id) != int(message.id)):
+							var health = int(message.newhealth)
+							$player1.health = health
+							player1_health.value = health
+	
 	player1x.append($player1.position.x)
 	player1y.append($player1.position.y)
+	playerHealth.append($player2.health)
+	
 	
 	if is_dead != null:
 		is_dead.queue_free()
 		print("dead")
+	
+	if (len(playerHealth) == 3):
+		playerHealth.remove_at(0)
+	
+	if (len(playerHealth) == 2 && (playerHealth[0] != playerHealth[1])):
+		var msg = JSON.stringify({"action":"update_health", "newhealth":playerHealth[1], "id":data.id})
+		socket.send_text(msg)
+		player2_health.value = playerHealth[1]
 	
 	# send bullet to server
 	if has_bullet != null:
