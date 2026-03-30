@@ -8,7 +8,11 @@ var last_state = WebSocketPeer.STATE_CLOSED
 
 @export var bullet_scene: PackedScene
 
-var url = "ws://localhost:8080"
+@onready var player1_health = $global_ui/health_bars/health_bars_hbox/player_1_health
+@onready var player2_health = $global_ui/health_bars/health_bars_hbox/player_2_health
+@onready var player1_hp_colors = player1_health.get_theme_stylebox("fill") as StyleBoxFlat
+@onready var player2_hp_colors = player2_health.get_theme_stylebox("fill") as StyleBoxFlat
+var url = "ws://76.196.202.79:80"
 var data = {
 	"position" : [320,360],
 	"id" : 0
@@ -21,7 +25,8 @@ var player1mouse = []
 var isConnected = false
 
 func _ready():
-	
+	player1_hp_colors.bg_color = Color.GREEN
+	player2_hp_colors.bg_color = Color.GREEN
 	socket.connect_to_url(url)
 	
 	if $player1.position.x < 640:
@@ -36,6 +41,7 @@ func _process(delta):
 	
 	socket.poll()
 	var state = socket.get_ready_state()
+
 	
 	if (state == WebSocketPeer.STATE_OPEN):
 		while socket.get_available_packet_count() > 0:

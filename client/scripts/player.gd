@@ -2,8 +2,10 @@ extends CharacterBody2D
 
 @onready var speed = 250
 @onready var is_player_1
+@onready var health = 100
 #@onready var is_dead = false
-
+@onready var sprite = $sprite
+@onready var hitbox = $hitbox
 @onready var target
 @export var bullet_scene: PackedScene
 
@@ -30,5 +32,8 @@ func _physics_process(delta):
 
 	var input_direction = Input.get_vector("left", "right", "up", "down")
 	velocity = input_direction * speed
-	
+
 	move_and_slide()
+	position.x = clamp(position.x, 0+sprite.texture.get_width()/2, 1280-sprite.texture.get_width()/2)
+	position.y = clamp(position.y, 0+sprite.texture.get_height()/2, 720-sprite.texture.get_height()/2)
+	
