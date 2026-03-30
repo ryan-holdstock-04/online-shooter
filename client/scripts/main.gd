@@ -68,13 +68,16 @@ func _process(delta):
 							$player2.position.y = int(message.position[1]);
 					if(message.action == "bullet"):
 						if (int(data.id) != int(message.id)):
+							var screen_size = get_viewport_rect().size
+							var center_point = screen_size / 2.0
 							var bullet = bullet_scene.instantiate()
 							add_child(bullet)
 							var cords = message.cords
 							var clean_string = cords.replace("(", "").replace(")", "")
 							var string_parts = clean_string.split(",")
 							var target_cords = Vector2(float(string_parts[0]), float(string_parts[1]))
-							$player2.look_at(target_cords)
+							var mirrored_cords = (center_point * 2.0) - target_cords
+							$player2.look_at(mirrored_cords)
 							bullet.transform = $player2.bullet_origin.global_transform
 	
 	player1x.append($player1.position.x)

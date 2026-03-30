@@ -1,24 +1,22 @@
-const PORT = process.env.PORT || 3000;
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const PORT = process.env.WSPORT || 8080;
+console.log(process.env.WSPORT);
 
 import  {WebSocketServer} from 'ws';
-import express from 'express';
 
-const app = express();
-const router = express.Router();
-const wss = new WebSocketServer({ port: process.env.WSPORT || 8080 });
+const wss = new WebSocketServer({ port: PORT });
 
 
-app.use(express.json());
-app.use('/', router);
+
 
 let gameState = []
 let currentId = 0;
 
 wss.on('connection', (ws) => {
-    console.log("Godot client connected!");
     // server/client handshake
     ws.send("connected");
-
 
     ws.on('message', (message) => {
         // If Godot sends a message to increment
@@ -81,9 +79,4 @@ const sendPosition = (data) => {
                 }
             });
 }
-
-
-app.listen(PORT, () => {
-    console.log(`API is running on port ${PORT}`);
-})
-console.log("Server is running on ws://localhost:8080");
+console.log(`Server is running on port ${PORT}`);
