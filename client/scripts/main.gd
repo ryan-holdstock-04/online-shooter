@@ -76,7 +76,8 @@ func _process(delta):
 							var clean_string = cords.replace("(", "").replace(")", "")
 							var string_parts = clean_string.split(",")
 							var target_cords = Vector2(float(string_parts[0]), float(string_parts[1]))
-							var mirrored_cords = (center_point * 2.0) - target_cords
+							var mirrored_x = (center_point.x * 2.0) - target_cords.x
+							var mirrored_cords = Vector2(mirrored_x, target_cords.y)
 							$player2.look_at(mirrored_cords)
 							bullet.transform = $player2.bullet_origin.global_transform
 	
