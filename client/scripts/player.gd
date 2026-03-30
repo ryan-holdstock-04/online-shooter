@@ -8,19 +8,26 @@ extends CharacterBody2D
 @onready var hitbox = $hitbox
 @onready var target
 @export var bullet_scene: PackedScene
-
+@onready var can_shoot = true
 @onready var bullet_origin = $bullet_origin
+@onready var bullet_cd = $bullet_cd
+
+func _on_bullet_cd_timeout():
+	can_shoot = true
 
 func _input(event):
 	# same as below, makes it so only player1 shoots
 	if !is_player_1:
 		return
-	if event.is_action_pressed("click"):
+	if event.is_action_pressed("click") and can_shoot:
 		target = get_global_mouse_position()
 		var bullet = bullet_scene.instantiate()
 		owner.add_child(bullet)
 		bullet.transform = $bullet_origin.global_transform
 		owner.has_bullet = get_global_mouse_position()
+		can_shoot = false
+		if bullet_cd.is_stopped():
+			bullet_cd.start()
 
 func _physics_process(delta):
 	# this makes it so only player1 moves, i think do whatever shenanigans determine which player is which here

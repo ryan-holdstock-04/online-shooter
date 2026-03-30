@@ -22,3 +22,9 @@ shape = SubResource("CircleShape2D_g2els")
 
 [node name="bullet_origin" type="Marker2D" parent="." unique_id=154926063]
 position = Vector2(20, 0)
+
+[node name="bullet_cd" type="Timer" parent="." unique_id=2098974946]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="bullet_cd" to="." method="_on_bullet_cd_timeout"]

@@ -80,7 +80,6 @@ func _process(delta):
 							var mirrored_cords = Vector2(mirrored_x, target_cords.y)
 							$player2.look_at(mirrored_cords)
 							bullet.transform = $player2.bullet_origin.global_transform
-	
 	player1x.append($player1.position.x)
 	player1y.append($player1.position.y)
 	
