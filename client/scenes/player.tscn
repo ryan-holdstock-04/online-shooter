@@ -1,24 +1,74 @@
 [gd_scene format=3 uid="uid://bubakdxn1gdst"]
 
-[ext_resource type="Texture2D" uid="uid://bl1qooswg2ra5" path="res://sprites/player_head.png" id="1_3vyb7"]
-[ext_resource type="Script" uid="uid://dppiharuapsmg" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://d2cn3jgvmycxn" path="res://scripts/main.gd" id="1_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://b6v0j85hlyqb8" path="res://scenes/bullet.tscn" id="2_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://bubakdxn1gdst" path="res://scenes/player.tscn" id="3_dqkch"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
-radius = 15.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
+size = Vector2(8, 720)
 
-[node name="player" type="CharacterBody2D" unique_id=1252405544]
-collision_layer = 3
-collision_mask = 3
-script = ExtResource("1_g2els")
+[sub_resource type="Theme" id="Theme_sugp2"]
+ProgressBar/styles/fill = null
+
+[node name="main" type="Node2D" unique_id=1046916506]
+script = ExtResource("1_qhqgy")
 bullet_scene = ExtResource("2_qhqgy")
 
-[node name="sprite" type="Sprite2D" parent="." unique_id=1193397956]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("1_3vyb7")
+[node name="background" type="CanvasLayer" parent="." unique_id=387152111]
+layer = -1
 
-[node name="hitbox" type="CollisionShape2D" parent="." unique_id=1703296550]
-shape = SubResource("CircleShape2D_g2els")
+[node name="ColorRect" type="ColorRect" parent="background" unique_id=206973363]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.60784316, 0.7294118, 0.6117647, 1)
 
-[node name="bullet_origin" type="Marker2D" parent="." unique_id=154926063]
-position = Vector2(20, 0)
+[node name="player1" parent="." unique_id=1252405544 instance=ExtResource("3_dqkch")]
+position = Vector2(320, 360)
+scale = Vector2(2, 2)
+
+[node name="player2" parent="." unique_id=1569891958 instance=ExtResource("3_dqkch")]
+position = Vector2(960, 360)
+scale = Vector2(2, 2)
+
+[node name="divider" type="StaticBody2D" parent="." unique_id=2130939002]
+position = Vector2(640, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="line" type="Line2D" parent="divider" unique_id=1287152201]
+points = PackedVector2Array(0, 0, 0, 720)
+width = 5.0
+default_color = Color(0.28773504, 0.38017872, 0.2916353, 1)
+
+[node name="collision" type="CollisionShape2D" parent="divider" unique_id=490919741]
+position = Vector2(0, 360)
+shape = SubResource("RectangleShape2D_0wfyh")
+
+[node name="global_ui" type="CanvasLayer" parent="." unique_id=1793621848]
+
+[node name="health_bars" type="MarginContainer" parent="global_ui" unique_id=1115803070]
+offset_right = 1280.0
+offset_bottom = 27.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="health_bars_hbox" type="HBoxContainer" parent="global_ui/health_bars" unique_id=1805347756]
+layout_mode = 2
+theme_override_constants/separation = 850
+
+[node name="player_1_health" type="ProgressBar" parent="global_ui/health_bars/health_bars_hbox" unique_id=1593637483]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme = SubResource("Theme_sugp2")
+value = 100.0
+
+[node name="player_2_health" type="ProgressBar" parent="global_ui/health_bars/health_bars_hbox" unique_id=370721377]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0

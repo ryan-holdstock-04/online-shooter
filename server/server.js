@@ -44,6 +44,9 @@ wss.on('connection', (ws) => {
             sendPosition(data);
         } else if (data.action === "bullet") {            
             sendBullet(data);
+        } else if (data.action === "update_health") {
+            console.log(data);
+            sendHealth(data);
         }
     });
 
@@ -56,13 +59,22 @@ wss.on('connection', (ws) => {
 
 });
 
+const sendHealth = data => {
+    const send = {"action" : "update_health", "newhealth" : data.newhealth, "id":data.id}
+    wss.clients.forEach((client) => {
+            if (client.readyState ===1) {
+                client.send(JSON.stringify(send));
+            }
+        });
+}
+
 const sendBullet = (data) => {
     const send = {"action" : "bullet", "id":data.id, "cords":data.cords};
-            wss.clients.forEach((client) => {
-                if (client.readyState ===1) {
-                    client.send(JSON.stringify(send));
-                }
-            });
+    wss.clients.forEach((client) => {
+        if (client.readyState ===1) {
+            client.send(JSON.stringify(send));
+        }
+    });
 }
 
 const sendPosition = (data) => {
