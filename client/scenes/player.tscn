@@ -14,61 +14,18 @@ ProgressBar/styles/fill = null
 script = ExtResource("1_qhqgy")
 bullet_scene = ExtResource("2_qhqgy")
 
-[node name="background" type="CanvasLayer" parent="." unique_id=387152111]
-layer = -1
+[node name="sprite" type="Sprite2D" parent="." unique_id=1193397956]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("1_3vyb7")
 
-[node name="ColorRect" type="ColorRect" parent="background" unique_id=206973363]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.60784316, 0.7294118, 0.6117647, 1)
+[node name="hitbox" type="CollisionShape2D" parent="." unique_id=1703296550]
+shape = SubResource("CircleShape2D_g2els")
 
-[node name="player1" parent="." unique_id=1252405544 instance=ExtResource("3_dqkch")]
-position = Vector2(320, 360)
-scale = Vector2(2, 2)
+[node name="bullet_origin" type="Marker2D" parent="." unique_id=154926063]
+position = Vector2(20, 0)
 
-[node name="player2" parent="." unique_id=1569891958 instance=ExtResource("3_dqkch")]
-position = Vector2(960, 360)
-scale = Vector2(2, 2)
+[node name="bullet_cd" type="Timer" parent="." unique_id=2098974946]
+wait_time = 0.2
+one_shot = true
 
-[node name="divider" type="StaticBody2D" parent="." unique_id=2130939002]
-position = Vector2(640, 0)
-collision_layer = 2
-collision_mask = 2
-
-[node name="line" type="Line2D" parent="divider" unique_id=1287152201]
-points = PackedVector2Array(0, 0, 0, 720)
-width = 5.0
-default_color = Color(0.28773504, 0.38017872, 0.2916353, 1)
-
-[node name="collision" type="CollisionShape2D" parent="divider" unique_id=490919741]
-position = Vector2(0, 360)
-shape = SubResource("RectangleShape2D_0wfyh")
-
-[node name="global_ui" type="CanvasLayer" parent="." unique_id=1793621848]
-
-[node name="health_bars" type="MarginContainer" parent="global_ui" unique_id=1115803070]
-offset_right = 1280.0
-offset_bottom = 27.0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="health_bars_hbox" type="HBoxContainer" parent="global_ui/health_bars" unique_id=1805347756]
-layout_mode = 2
-theme_override_constants/separation = 850
-
-[node name="player_1_health" type="ProgressBar" parent="global_ui/health_bars/health_bars_hbox" unique_id=1593637483]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 2
-theme = SubResource("Theme_sugp2")
-value = 100.0
-
-[node name="player_2_health" type="ProgressBar" parent="global_ui/health_bars/health_bars_hbox" unique_id=370721377]
-layout_mode = 2
-size_flags_horizontal = 3
-value = 100.0
+[connection signal="timeout" from="bullet_cd" to="." method="_on_bullet_cd_timeout"]
